@@ -1,0 +1,73 @@
+- hosts: deployer
+  become: true
+
+  tasks:
+  - name: Update ansible.cfg
+    blockinfile:
+      path: /etc/ansible/ansible.cfg
+      block: |
+        [defaults]
+        stdout_callback = debug
+
+  - name: Add deploy-target to /etc/hosts
+    blockinfile:
+      path: /etc/hosts
+      block: |
+        192.168.56.6 alfa
+        192.168.56.7 bravo
+        192.168.56.8 charlie
+
+  - name: Build Ansible inventory
+    set_fact:
+      inventory:
+        all:
+          hosts:
+            alfa:
+            bravo:
+            charlie:
+          vars:
+            java_package: java-17-openjdk
+
+  - name: Update Ansible inventory
+    copy:
+      dest: /etc/ansible/hosts
+      content: "{{ inventory | to_nice_yaml }}"
+
+  - name: Create deployer user
+    user:
+      name: deployer
+      groups:
+      - wheel
+      append: yes
+
+  - name: Create ssh dirs
+    file:
+      dest: "/home/{{ item }}/.ssh/"
+      state: directory
+      owner: "{{ item }}"
+      group: "{{ item }}"
+      mode: 0700
+    with_items:
+    - deployer
+    - vagrant
+
+  - name: Update ssh keypairs
+    openssh_keypair:
+      path: "/home/{{ item }}/.ssh/id_ed25519"
+      owner: "{{ item }}"
+      type: ed25519
+    with_items:
+    - deployer
+    - vagrant
+
+  - name: Update packages
+    dnf:
+      name:
+      - epel-release
+      state: present
+
+  - name: Update EPEL packages
+    dnf:
+      name:
+      - pwgen
+      state: present
