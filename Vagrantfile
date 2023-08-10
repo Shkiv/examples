@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
     alfa.vm.network "private_network", ip: "192.168.56.6"
 
     alfa.vm.provision :ansible_local do |ansible_local|
-      ansible_local.playbook = "playbooks/provision/node.yml"
+      ansible_local.playbook = "playbooks/provision/alfa.yml"
     end
   end
 

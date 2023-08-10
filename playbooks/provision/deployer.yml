@@ -60,6 +60,12 @@
     - deployer
     - vagrant
 
+  - name: Copy public key to shared folder
+    copy:
+      src: /home/vagrant/.ssh/id_ed25519.pub
+      dest: /vagrant/deployer.key.pub
+      remote_src: yes
+
   - name: Update packages
     dnf:
       name:
