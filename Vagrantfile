@@ -4,13 +4,11 @@
 Vagrant.configure(2) do |config|
   config.vm.define "deployer" do |deployer|
     deployer.vm.box = "rockylinux/9"
-
     deployer.vm.hostname = "deployer"
-    deployer.vm.synced_folder ".", "/vagrant"
     deployer.vm.network "private_network", ip: "192.168.56.5"
 
     deployer.vm.provision :ansible_local do |ansible_local|
-      ansible_local.playbook = "playbooks/provision/vagrant.yml"
+      ansible_local.playbook = "playbooks/provision/deployer.yml"
     end
   end
 
@@ -18,6 +16,10 @@ Vagrant.configure(2) do |config|
     alfa.vm.box = "rockylinux/9"
     alfa.vm.hostname = "alfa"
     alfa.vm.network "private_network", ip: "192.168.56.6"
+
+    alfa.vm.provision :ansible_local do |ansible_local|
+      ansible_local.playbook = "playbooks/provision/node.yml"
+    end
   end
 
   config.vm.define "bravo" do |bravo|

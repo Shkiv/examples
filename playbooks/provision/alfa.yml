@@ -1,0 +1,3 @@
+- hosts: alfa
+  tasks:
+  - import_tasks: nginx.yml
