@@ -1,0 +1,6 @@
+- hosts:
+  - alfa
+  - bravo
+  - charlie
+  tasks:
+  - import_tasks: key.yml

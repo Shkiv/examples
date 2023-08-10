@@ -1,0 +1,8 @@
+- name: Set deployer publickey
+  set_fact:
+    key: "{{ lookup('file', '/vagrant/deployer.key.pub') }}"
+
+- name: Deploy publickey
+  lineinfile:
+    path: /home/vagrant/.ssh/authorized_keys
+    line: "{{ key }}"

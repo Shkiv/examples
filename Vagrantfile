@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
     alfa.vm.network "private_network", ip: "192.168.56.6"
 
     alfa.vm.provision :ansible_local do |ansible_local|
-      ansible_local.playbook = "playbooks/provision/alfa.yml"
+      ansible_local.playbook = "playbooks/provision/node.yml"
     end
   end
 
@@ -26,12 +26,20 @@ Vagrant.configure(2) do |config|
     bravo.vm.box = "rockylinux/9"
     bravo.vm.hostname = "bravo"
     bravo.vm.network "private_network", ip: "192.168.56.7"
+
+    bravo.vm.provision :ansible_local do |ansible_local|
+      ansible_local.playbook = "playbooks/provision/node.yml"
+    end
   end
 
   config.vm.define "charlie" do |charlie|
     charlie.vm.box = "rockylinux/9"
     charlie.vm.hostname = "charlie"
     charlie.vm.network "private_network", ip: "192.168.56.8"
+
+    charlie.vm.provision :ansible_local do |ansible_local|
+      ansible_local.playbook = "playbooks/provision/node.yml"
+    end
   end
 
   config.vm.provider "virtualbox" do |v|

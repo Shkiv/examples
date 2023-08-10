@@ -1,13 +1,18 @@
-- block:
-  - name: Install Nginx
-    dnf:
-      name: nginx
-      state: present
-    become: true
+- hosts:
+  - alfa
+  - bravo
+  - charlie
+  tasks:
+  - block:
+    - name: Install Nginx
+      dnf:
+        name: nginx
+        state: present
+      become: true
 
-  - name: Start Nginx
-    systemd:
-      name: nginx
-      state: started
-      enabled: true
-  become: true
+    - name: Start Nginx
+      systemd:
+        name: nginx
+        state: started
+        enabled: true
+    become: true
